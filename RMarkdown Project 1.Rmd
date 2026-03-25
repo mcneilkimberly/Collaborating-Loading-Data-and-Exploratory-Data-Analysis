@@ -10,3 +10,21 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 ```
 
+
+```{r}
+coral <- read.csv("Global_Coral_Bleaching_Database.csv",na="N/A")
+coral <- janitor::clean_names(coral)
+coral
+```
+
+```{r}
+coral_relevant_columns <- coral%>%
+  summarize(
+    record_id=record_id,
+    percent_mortality=percent_mortality,
+    coral_regions=coral_regions,
+    max_percent_bleached=max_percent_bleached
+    )
+coral_relevant_columns
+```
+
