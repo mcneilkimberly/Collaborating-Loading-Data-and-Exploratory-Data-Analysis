@@ -1,0 +1,11 @@
+---
+title: "the awesomest project ever true?"
+author: "Morde Bernstein, ________, ________"
+date: "3/25/2026"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
