@@ -1,6 +1,6 @@
 ---
 title: "the awesomest project ever true?"
-author: "Morde Bernstein, ________, ________"
+author: "Morde Bernstein, Marley McGehee, ________"
 date: "3/25/2026"
 output: html_document
 ---
@@ -8,6 +8,7 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
+
 ```
 
 
@@ -26,5 +27,27 @@ coral_relevant_columns <- coral%>%
     max_percent_bleached=max_percent_bleached
     )
 coral_relevant_columns
+```
+
+```{r}
+columns_coral_relevant_columns <- coral_relevant_columns %>%
+  separate_wider_delim(percent_mortality, delim = "-",
+names = c("mortality_one", "mortality_two"),
+too_few = "align_start",
+too_many = "merge"
+) %>%
+  mutate(
+    mortality_one = parse_number(mortality_one),
+    mortality_two = parse_number(mortality_two) )
+
+columns_coral_relevant_columns
+```
+
+```{r}
+means_coral <- columns_coral_relevant_columns %>%
+  mutate(average_percent_mortality = rowMeans(select(.,mortality_one, mortality_two), na.rm = TRUE)) %>%
+  filter(!is.na(average_percent_mortality))
+
+means_coral
 ```
 
