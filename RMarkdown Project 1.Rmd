@@ -11,6 +11,11 @@ library(tidyverse)
 
 ```
 
+## Introduction
+
+## Data Import
+
+### Loading the Data
 
 ```{r}
 coral <- read.csv("Global_Coral_Bleaching_Database.csv",na="N/A")
@@ -28,6 +33,7 @@ coral_relevant_columns <- coral%>%
     )
 coral_relevant_columns
 ```
+### Cleaning Perecent Mortality
 
 ```{r}
 columns_coral_relevant_columns <- coral_relevant_columns %>%
@@ -50,4 +56,31 @@ means_coral <- columns_coral_relevant_columns %>%
 
 means_coral
 ```
+
+
+
+
+Some of the data for percent mortality were given in ranges, and some of it was single values. In order to use this variable, we separated the data into two separate columns, mortality one and mortality two. Mortality one had the values that were the lower end of the range as well as the single values, and mortality two had the higher end of the ranges. We then cleaned the data and removed any words or units that were included. In order to have a single variable, we found the means for mortality one and two by using row means. 
+
+
+## Univariate Data
+
+
+## Bivariate Data
+
+### Max Percent Bleached vs Coral Regions
+
+### Max Percent Bleached vs Percent Mortality
+
+
+
+## Trivariate Data
+
+## Conclusion
+
+
+
+
+
+
 
