@@ -52,7 +52,8 @@ columns_coral_relevant_columns
 ```{r}
 means_coral <- columns_coral_relevant_columns %>%
   mutate(average_percent_mortality = rowMeans(select(.,mortality_one, mortality_two), na.rm = TRUE)) %>%
-  filter(!is.na(average_percent_mortality))
+  filter(average_percent_mortality < 100)
+
 
 means_coral
 ```
