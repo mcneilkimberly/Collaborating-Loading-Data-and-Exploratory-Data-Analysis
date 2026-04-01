@@ -1,5 +1,5 @@
 ---
-title: "the awesomest project ever true?"
+title: "the awesomest project ever true"
 author: "Morde Bernstein, Marley McGehee, ________"
 date: "3/25/2026"
 output: html_document
@@ -62,7 +62,7 @@ means_coral
 
 
 
-Some of the data for percent mortality were given in ranges, and some of it was single values. In order to use this variable, we separated the data into two separate columns, mortality one and mortality two. Mortality one had the values that were the lower end of the range as well as the single values, and mortality two had the higher end of the ranges. We then cleaned the data and removed any words or units that were included. In order to have a single variable, we found the means for mortality one and two by using row means. Following this, we filtered by less than 100 to get rid of any values that were leftover years from the descriptions.  Additionally, we ran max percent bleached through parse number to make sure it was numeric and could be used for calculations. 
+First we loaded the data and cleaned the names. Following that we saved only our target variables that we would be looking at. Some of the data for percent mortality were given in ranges, and some of it was single values. In order to use this variable, we separated the data into two separate columns, mortality one and mortality two. Mortality one had the values that were the lower end of the range as well as the single values, and mortality two had the higher end of the ranges. We then cleaned the data and removed any words or units that were included. In order to have a single variable, we found the means for mortality one and two by using row means. Following this, we filtered by less than 100 to get rid of any values that were leftover years from the descriptions.  Additionally, we ran max percent bleached through parse number to make sure it was numeric and could be used for calculations. 
 
 
 ## Univariate Data
@@ -72,7 +72,31 @@ Some of the data for percent mortality were given in ranges, and some of it was 
 
 ### Max Percent Bleached vs Coral Regions
 
+#### Visual Summary
 
+```{r}
+ggplot(means_coral, aes(x=coral_regions, y = max_percent_bleached))+
+  geom_boxplot() +
+  labs (x = "Coral Regions", y = "Max Percent Bleached")
+```
+
+#### Numberic Summary
+
+```{r}
+knitr::kable(means_coral %>%
+  group_by(coral_regions) %>%
+  summarize(
+    n = n(),
+    first_quantile = quantile(max_percent_bleached, 0.25, na.rm = TRUE),
+    median = median(max_percent_bleached, 0.5, na.rm = TRUE),
+    third_quantile = quantile(max_percent_bleached, 0.75, na.rm = TRUE),
+    mean = mean(max_percent_bleached, na.rm = TRUE),
+    standard_deviation = sd(max_percent_bleached, na.rm = TRUE)
+ ))
+```
+
+
+All four of the reef types have the same range for maximum percent bleached, 0 to 100. West Indian Reef tends to have higher maximum percent bleach compared to the other three reefs. It has the highest mean maximum percent bleached. Great Barrier Reef and other reefs are similar to each other with low first quartile and median percent bleaching compared to the West Indian Reef and Caribbean/GoM reefs. However, there is quiet a large standard deviation for all four of the reef types.
 
 ### Max Percent Bleached vs Percent Mortality
 
@@ -81,7 +105,8 @@ Some of the data for percent mortality were given in ranges, and some of it was 
 ```{r}
 ggplot(means_coral, aes(x = max_percent_bleached, y =average_percent_mortality )) +
   geom_point(alpha = 0.2)+ 
-  geom_smooth(color = "blue")
+  geom_smooth(color = "blue") +
+  labs(x = "Max Percent Bleached", y = "Average Percent Mortality")
 ```
 
 #### Correlation
