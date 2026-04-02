@@ -1,8 +1,10 @@
 ---
-title: "the awesomest project ever true"
+title: "Global Coral Bleaching Data Exploration"
 author: "Morde Bernstein, Marley McGehee, Kimberly McNeil"
 date: "3/25/2026"
-output: html_document
+output: 
+   html_document:
+    code_folding: hide
 ---
 
 ```{r setup, include=FALSE}
@@ -206,13 +208,15 @@ ggplot(means_coral, aes(x=coral_regions, y = max_percent_bleached))+
 knitr::kable(means_coral %>%
   group_by(coral_regions) %>%
   summarize(
-    n = n(),
-    first_quantile = quantile(max_percent_bleached, 0.25, na.rm = TRUE),
-    median = median(max_percent_bleached, 0.5, na.rm = TRUE),
-    third_quantile = quantile(max_percent_bleached, 0.75, na.rm = TRUE),
-    mean = mean(max_percent_bleached, na.rm = TRUE),
-    standard_deviation = sd(max_percent_bleached, na.rm = TRUE)
- ))
+    Count = n(),
+    Mean = mean(max_percent_bleached, na.rm = TRUE),
+    Median = median(max_percent_bleached, 0.5, na.rm = TRUE),
+    SD = sd(max_percent_bleached, na.rm = TRUE),
+    Min = min(max_percent_bleached, na.rm = TRUE),
+    Q1 = quantile(max_percent_bleached, 0.25, na.rm = TRUE),
+    Q3 = quantile(max_percent_bleached, 0.75, na.rm = TRUE),
+    Max = max(max_percent_bleached, na.rm = TRUE)
+   ))
 ```
 
 
@@ -225,7 +229,7 @@ All four of the reef types have the same range for maximum percent bleached, 0 t
 ```{r}
 ggplot(means_coral, aes(x = max_percent_bleached, y =average_percent_mortality )) +
   geom_point(alpha = 0.2)+ 
-  geom_smooth(color = "blue") +
+  geom_smooth(color = "steelblue") +
   labs(x = "Max Percent Bleached", y = "Average Percent Mortality")
 ```
 
