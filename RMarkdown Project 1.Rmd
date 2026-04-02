@@ -126,6 +126,12 @@ ggplot(means_coral, aes(x = max_percent_bleached)) +
          y = "Density")
 ```
 
+```{r}
+ggplot(means_coral, aes(x=max_percent_bleached))+
+  geom_boxplot() +
+  labs (title = "Maximum Percent Bleached Boxplot", 
+    x = "Maximum Percent Bleached")
+```
 
 
 #### Numeric Summary
@@ -169,6 +175,12 @@ ggplot(means_coral, aes(x = average_percent_mortality)) +
          y = "Density")
 ```
 
+```{r}
+ggplot(means_coral, aes(x=average_percent_mortality))+
+  geom_boxplot() +
+  labs (title = "Average Percent Mortality Boxplot", 
+    x = "Average Percent Mortality")
+```
 
 
 #### Numeric Summary
