@@ -15,6 +15,8 @@ library(knitr)
 
 ## Introduction
 
+The dataset is the Global Coral Bleaching Database from the National Centers for Environmental Information. The data focuses on coral reef bleaching, which is when under stress coral gets rid of their symbiotic algae. This can lead to negative environmental consequences for the coral ecosystem. The data looks at amounts of coral bleaching as well as mortality rates of different coral reefs throughout the world. The data was taken from 1963 to 2021. The sample size of the data is 33,244.
+
 ## Data Import
 
 ### Loading the Data
