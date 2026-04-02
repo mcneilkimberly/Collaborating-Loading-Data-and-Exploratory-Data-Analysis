@@ -243,6 +243,17 @@ There appears to be many average percent mortality rates of zero, which is weigh
 
 ## Trivariate Data
 
+### Average Percent Mortality vs Max Percent Bleached, separated by Region
+
+```{r}
+means_coral%>%
+  ggplot(mapping=aes(max_percent_bleached,average_percent_mortality))+
+  geom_point(alpha=.2)+
+  geom_smooth()+
+  facet_wrap(~coral_regions)
+```
+The scatterplots. I'll do the correlations and analysis soon
+
 ## Conclusion
 
 
