@@ -1,6 +1,6 @@
 ---
 title: "the awesomest project ever true"
-author: "Morde Bernstein, Marley McGehee, ________"
+author: "Morde Bernstein, Marley McGehee, Kimberly McNeil"
 date: "3/25/2026"
 output: html_document
 ---
@@ -8,7 +8,7 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
-
+library(knitr)
 ```
 
 ## Introduction
@@ -66,6 +66,126 @@ First we loaded the data and cleaned the names. Following that we saved only our
 
 
 ## Univariate Data
+
+### Coral Regions
+
+[description of what this variable is]
+
+#### Visual Summary
+
+```{r}
+means_coral %>%
+  count(coral_regions) %>%
+  ggplot(aes(x = reorder(coral_regions, n), y = n)) +
+  geom_col(fill = "steelblue",
+           color = "black") +
+  coord_flip() +
+  labs(title = "Bar Plot of Categories",
+       x = "Category",
+       y = "Count")
+```
+
+
+#### Numeric Summary
+
+```{r}
+means_coral %>%
+  count(coral_regions) %>%
+  mutate(proportion_round = round((n / sum(n)) / 0.0001) * 0.0001) %>%
+  kable(caption = "Frequency Table for Coral Regions",
+        col.names = c("Coral Regions", 
+                      "n", 
+                      "Proportion"))
+```
+
+
+
+
+
+### Maximum Percent Bleached
+
+```{r}
+means_coral %>% 
+  ggplot(aes(x = max_percent_bleached)) +
+    geom_histogram(bins = 15,
+                   fill = "steelblue",
+                   color = "black") +
+    labs(title = "Distribution of Maximum Percent Bleached (Histogram)",
+         x = "Value",
+         y = "Count")
+```
+
+```{r}
+ggplot(means_coral, aes(x = max_percent_bleached)) +
+  geom_density(fill = "steelblue",
+               color = "black") +
+    labs(title = "Distribution of Maximum Percent Bleached (Density)",
+         x = "Value",
+         y = "Density")
+```
+
+
+
+#### Numeric Summary
+
+```{r}
+means_coral %>%
+  summarise(
+    Count = n(),
+    Mean = mean(max_percent_bleached, na.rm = TRUE),
+    Median = median(max_percent_bleached, na.rm = TRUE),
+    sd = sd(max_percent_bleached, na.rm = TRUE),
+    Min = min(max_percent_bleached, na.rm = TRUE),
+    Q1 = quantile(max_percent_bleached, 0.25, na.rm = TRUE),
+    Q3 = quantile(max_percent_bleached, 0.75, na.rm = TRUE),
+    Max = max(max_percent_bleached, na.rm = TRUE)
+  ) %>% 
+  kable(caption = "Summary Statistics for Maximum Percent Bleached")
+```
+
+
+
+### Average Percent Mortality
+
+```{r}
+means_coral %>% 
+  ggplot(aes(x = average_percent_mortality)) +
+    geom_histogram(bins = 15,
+                   fill = "steelblue",
+                   color = "black") +
+    labs(title = "Distribution of Average Percent Mortality (Histogram)",
+         x = "Value",
+         y = "Count")
+```
+
+```{r}
+ggplot(means_coral, aes(x = average_percent_mortality)) +
+  geom_density(fill = "steelblue",
+               color = "black") +
+    labs(title = "Distribution of Average Percent Mortality (Density)",
+         x = "Value",
+         y = "Density")
+```
+
+
+
+#### Numeric Summary
+
+```{r}
+means_coral %>%
+  summarise(
+    Count = n(),
+    Mean = mean(average_percent_mortality, na.rm = TRUE),
+    Median = median(average_percent_mortality, na.rm = TRUE),
+    sd = sd(average_percent_mortality, na.rm = TRUE),
+    Min = min(average_percent_mortality, na.rm = TRUE),
+    Q1 = quantile(average_percent_mortality, 0.25, na.rm = TRUE),
+    Q3 = quantile(average_percent_mortality, 0.75, na.rm = TRUE),
+    Max = max(average_percent_mortality, na.rm = TRUE)
+  ) %>% 
+  kable(caption = "Summary Statistics for Average Percent Mortality")
+```
+
 
 
 ## Bivariate Data
