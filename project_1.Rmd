@@ -5,10 +5,9 @@ date: "3/25/2026"
 output:
   html_document:
     code_folding: hide
- 
 ---
 
-```{r setup, include=FALSE, warning = FALSE, message = FALSE}
+```{r setup, include = FALSE, echo = TRUE, warning = FALSE, message = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(knitr)
@@ -17,7 +16,7 @@ library(dplyr)
 
 ## Introduction
 
-The dataset is the Global Coral Bleaching Database from the National Centers for Environmental Information. The data focuses on coral reef bleaching, which is when under stress coral gets rid of their symbiotic algae. This can lead to negative environmental consequences for the coral ecosystem. The data looks at amounts of coral bleaching as well as mortality rates of different coral reefs throughout the world. The data was taken from 1963 to 2021. The sample size of the data is 33,244.
+The dataset is the Global Coral Bleaching Database from the National Centers for Environmental Information. The data focuses on coral reef bleaching, which is when under stress coral gets rid of their symbiotic algae. This can lead to negative environmental consequences for the coral ecosystem. The data looks at amounts of coral bleaching as well as mortality rates of different coral reefs throughout the world. The data was taken from 1963 to 2021, and the sample size of the data is 33,244. You can find the dataset on their website: [Global Coral Bleaching Database (NCEI Accession 0228498)](https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.nodc:0228498).
 
 ## Data Import
 
@@ -69,7 +68,7 @@ The Coral Region categorical variable details the location of the recorded coral
 
 The following bar plot showcases the distribution of categories recorded in our dataset:
 
-```{r}
+```{r warning = FALSE}
 means_coral %>%
   count(coral_regions) %>%
   ggplot(aes(x = reorder(coral_regions, n), y = n)) +
@@ -85,7 +84,7 @@ means_coral %>%
 
 The following table showcases the proportions of the four region categoies:
 
-```{r}
+```{r warning = FALSE}
 means_coral %>%
   count(coral_regions) %>%
   mutate(proportion_round = round((n / sum(n)) / 0.0001) * 0.0001) %>%
@@ -106,7 +105,7 @@ The Maximum Percent Bleached quantitative variable details the maximum percentag
 
 The following charts showcase the distribution of the maximum percent of bleaching in the researched reefs in various ways, featuring a histogram, a density curve, and a box-and-whisker plot respectively:
 
-```{r}
+```{r warning = FALSE}
 means_coral %>% 
   ggplot(aes(x = max_percent_bleached)) +
     geom_histogram(bins = 15,
@@ -117,7 +116,7 @@ means_coral %>%
          y = "Count")
 ```
 
-```{r}
+```{r warning = FALSE}
 ggplot(means_coral, aes(x = max_percent_bleached)) +
   geom_density(fill = "steelblue",
                color = "black") +
@@ -126,7 +125,7 @@ ggplot(means_coral, aes(x = max_percent_bleached)) +
          y = "Density")
 ```
 
-```{r}
+```{r warning = FALSE}
 ggplot(means_coral, aes(x=max_percent_bleached))+
   geom_boxplot() +
   labs (title = "Maximum Percent Bleached Boxplot", 
@@ -136,7 +135,7 @@ ggplot(means_coral, aes(x=max_percent_bleached))+
 
 #### Numeric Summary
 
-```{r}
+```{r warning = FALSE}
 means_coral %>%
   summarise(
     Count = n(),
@@ -161,7 +160,7 @@ The Average Percent Mortality quantitative variable details the average percenta
 
 The following charts showcase the distribution of the average percent of mortality in the researched reefs in various ways, featuring a histogram, a density curve, and a box-and-whisker plot respectively:
 
-```{r}
+```{r warning = FALSE}
 means_coral %>% 
   ggplot(aes(x = average_percent_mortality)) +
     geom_histogram(bins = 15,
@@ -172,7 +171,7 @@ means_coral %>%
          y = "Count")
 ```
 
-```{r}
+```{r warning = FALSE}
 ggplot(means_coral, aes(x = average_percent_mortality)) +
   geom_density(fill = "steelblue",
                color = "black") +
@@ -181,7 +180,7 @@ ggplot(means_coral, aes(x = average_percent_mortality)) +
          y = "Density")
 ```
 
-```{r}
+```{r warning = FALSE}
 ggplot(means_coral, aes(x=average_percent_mortality))+
   geom_boxplot() +
   labs (title = "Average Percent Mortality Boxplot", 
@@ -190,7 +189,7 @@ ggplot(means_coral, aes(x=average_percent_mortality))+
 
 #### Numeric Summary
 
-```{r}
+```{r warning = FALSE}
 means_coral %>%
   summarise(
     Count = n(),
@@ -215,7 +214,6 @@ The mean (6.73) and median (0) compared to the minimum (0), Q1 (0), Q3 (2.5), an
 
 The following chart highlights the max percent of coral bleached over the various coral regions looked at:
 
-
 ```{r, warning = FALSE}
 ggplot(means_coral, aes(x=coral_regions, y = max_percent_bleached))+
   geom_boxplot() +
@@ -224,7 +222,7 @@ ggplot(means_coral, aes(x=coral_regions, y = max_percent_bleached))+
 
 #### Numeric Summary
 
-```{r}
+```{r warning = FALSE}
 knitr::kable(means_coral %>%
   group_by(coral_regions) %>%
   summarize(
@@ -266,7 +264,7 @@ There appears to be many average percent mortality rates of zero, which is weigh
 
 ### Average Percent Mortality vs Max Percent Bleached, separated by Region
 
-```{r}
+```{r warning = FALSE, message = FALSE}
 means_coral%>%
   ggplot(mapping=aes(max_percent_bleached,average_percent_mortality))+
   geom_point(alpha=.2)+
@@ -278,17 +276,16 @@ means_coral%>%
 ```{r}
 means_coral %>%
   filter(!is.na(max_percent_bleached))%>%
-  group_by(coral_regions)%>%
-  summarize(correlation = cor(max_percent_bleached,average_percent_mortality))
+  group_by(coral_regions) %>%
+  summarize(correlation = cor(max_percent_bleached,average_percent_mortality)) %>%
+  kable()
 ```
 
 
 None of the relationships are very strong (none of them are over 0.5, and two aren’t above |0.1|. The Caribbean/GoM region’s trend line is actually very slightly negative at -0.05, which is likely due to how many bleaching events have 0% mortality no matter the bleaching. The GBR’s trend line is the most strongly correlated out of all the single regions, and while the majority of points are still at or around 0% mortality and 0% bleaching, events with higher bleaching have a higher than 0% mortality rate much more frequently. The Other Reef category is a catchall region, and it appears to look very similar to the Caribbean’s scatter plot until the last 12% of bleaching where suddenly there are a lot of events with much higher mortality rates, including some in the mid 90% area. The West Indian region’s data appears to be in columns by bleaching percentage, at 0, 12, 50, 88, and 100, resulting in an odd looking trend line and explaining the low correlation of 0.07. Again, to reiterate it appears that the correlation between the percentage of bleaching and the percentage of mortality by region is rather weak.
 
 
-
 ## Conclusion
-
 
 Overall, this analysis of the Global Coral Bleaching Database highlights several important patterns in coral reef health across regions and over time. First, the dataset itself is unevenly distributed geographically, with a large proportion of observations coming from the Caribbean/Gulf of Mexico and a broad “Other Reef” category. This suggests that global conclusions should be made with caution, as some reef systems, such as the Great Barrier Reef and West Indian reefs, are comparatively underrepresented. 
 
@@ -297,8 +294,3 @@ From the univariate analysis, both maximum percent bleaching and average percent
 From the bivariate analysis, there is a weak correlation between max percent bleached and average percent mortality. Additionally, there are a large number of maximum percent bleached values of zero with a large amount of variability. This makes it hard to make specific conclusions about the data, but we can see mortality across all levels of bleaching. 
 
 Given the weak correlation for all regions, it is hard to conclude that there is a meaningful relationship between the maximum percentage of bleaching and the average mortality rate for a given bleaching event, no matter the region. The strongest correlation between the two variables occurs in the Great Barrier Reef, while the weakest occurs in the Caribbean. It would be interesting to explore further why higher rates of bleaching do not affect mortality rates in the Caribbean as much as they do in the Great Barrier Reef.
-
-
-
-
-
