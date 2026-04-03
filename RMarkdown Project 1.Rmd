@@ -277,7 +277,19 @@ means_coral%>%
   geom_smooth()+
   facet_wrap(~coral_regions)
 ```
-The scatterplots. I'll do the correlations and analysis soon
+
+
+```{r}
+means_coral %>%
+  filter(!is.na(max_percent_bleached))%>%
+  group_by(coral_regions)%>%
+  summarize(correlation = cor(max_percent_bleached,average_percent_mortality))
+```
+
+
+None of the relationships are very strong (none of them are over 0.5, and two aren’t above |0.1|. The Caribbean/GoM region’s trend line is actually very slightly negative at -0.05, which is likely due to how many bleaching events have 0% mortality no matter the bleaching. The GBR’s trend line is the most strongly correlated out of all the single regions, and while the majority of points are still at or around 0% mortality and 0% bleaching, events with higher bleaching have a higher than 0% mortality rate much more frequently. The Other Reef category is a catchall region, and it appears to look very similar to the Caribbean’s scatter plot until the last 12% of bleaching where suddenly there are a lot of events with much higher mortality rates, including some in the mid 90% area. The West Indian region’s data appears to be in columns by bleaching percentage, at 0, 12, 50, 88, and 100, resulting in an odd looking trend line and explaining the low correlation of 0.07. Again, to reiterate it appears that the correlation between the percentage of bleaching and the percentage of mortality by region is rather weak.
+
+
 
 ## Conclusion
 
