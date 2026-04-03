@@ -24,7 +24,6 @@ The dataset is the Global Coral Bleaching Database from the National Centers for
 ```{r}
 coral <- read.csv("Global_Coral_Bleaching_Database.csv",na="N/A")
 coral <- janitor::clean_names(coral)
-
 ```
 
 ```{r}
@@ -156,7 +155,7 @@ The mean (28.42) and median (14) compared to the minimum (0), Q1 (1), Q3 (50), a
 
 ### Average Percent Mortality
 
-The Average Percent Mortality quantitative variable details the average percentage of how fatal the bleaching had on life in the coral reef. Once again, this variable was often recorded in ranges or entire sentences, so we extracted the rates and found their averages to represent the central tendency, or the “typical,” mortality rate of that particular recording. The unit is once again percentages. 
+The Average Percent Mortality quantitative variable details the average percentage of how fatal the bleaching had on life in the coral reef. Once again, this variable was often recorded in ranges or entire sentences, so we extracted the rates and found their averages to represent the central tendency, or the “typical,” mortality rate of that particular recording. The unit is once again in percentages. 
 
 #### Visual Summary
 
