@@ -11,6 +11,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(knitr)
+library(dplyr)
 ```
 
 ## Introduction
@@ -24,33 +25,33 @@ The dataset is the Global Coral Bleaching Database from the National Centers for
 ```{r}
 coral <- read.csv("Global_Coral_Bleaching_Database.csv",na="N/A")
 coral <- janitor::clean_names(coral)
-coral
+
+head(coral)
 ```
 
 ```{r}
-coral_relevant_columns <- coral%>%
-  summarize(
-    record_id=record_id,
-    percent_mortality=percent_mortality,
-    coral_regions=coral_regions,
-    max_percent_bleached=max_percent_bleached
-    )
-coral_relevant_columns
+coral_relevant_columns <- coral %>%
+  select(record_id,
+         percent_mortality,
+         coral_regions,
+         max_percent_bleached)
+
+head(coral_relevant_columns)
 ```
 ### Cleaning Perecent Mortality
 
 ```{r, warning = FALSE, message = FALSE}
 columns_coral_relevant_columns <- coral_relevant_columns %>%
   separate_wider_delim(percent_mortality, delim = "-",
-names = c("mortality_one", "mortality_two"),
-too_few = "align_start",
-too_many = "merge"
-) %>%
+  names = c("mortality_one", "mortality_two"),
+  too_few = "align_start",
+  too_many = "merge"
+  ) %>%
   mutate(
     mortality_one = parse_number(mortality_one),
     mortality_two = parse_number(mortality_two) )
 
-columns_coral_relevant_columns
+head(columns_coral_relevant_columns)
 ```
 
 ```{r}
@@ -59,8 +60,7 @@ means_coral <- columns_coral_relevant_columns %>%
   filter(average_percent_mortality < 100) %>%
   mutate(max_percent_bleached = parse_number(max_percent_bleached))
 
-
-means_coral
+head(means_coral)
 ```
 
 First we loaded the data and cleaned the names. Following that we saved only our target variables that we would be looking at. Some of the data for percent mortality were given in ranges, and some of it was single values. In order to use this variable, we separated the data into two separate columns, mortality one and mortality two. Mortality one had the values that were the lower end of the range as well as the single values, and mortality two had the higher end of the ranges. We then cleaned the data and removed any words or units that were included. In order to have a single variable, we found the means for mortality one and two by using row means. Following this, we filtered by less than 100 to get rid of any values that were leftover years from the descriptions.  Additionally, we ran max percent bleached through parse number to make sure it was numeric and could be used for calculations. 
@@ -234,7 +234,7 @@ knitr::kable(means_coral %>%
   summarize(
     Count = n(),
     Mean = mean(max_percent_bleached, na.rm = TRUE),
-    Median = median(max_percent_bleached, 0.5, na.rm = TRUE),
+    Median = median(max_percent_bleached, na.rm = TRUE),
     SD = sd(max_percent_bleached, na.rm = TRUE),
     Min = min(max_percent_bleached, na.rm = TRUE),
     Q1 = quantile(max_percent_bleached, 0.25, na.rm = TRUE),
